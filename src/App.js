@@ -1,24 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import SideBar from './components/SideBar';
+import Home from './pages/Home';
+import styled from 'styled-components';
+import { useState } from 'react';
 
-function App() {
+const MainLayout = styled.section`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+`;
+
+const BodyLayout = styled.section`
+    width: 100%;
+`;
+
+function App({ hours = 1, minutes = 0, seconds = 0 }) {
+  const [over, setOver] = useState(false);
+  const [[h, m, s], setTime] = useState([hours, minutes, seconds]);
+  const [click, setClick] = useState(false);
+
+  const tick = () => {
+    if (over) return;
+
+    if (h === 0 && m === 0 && s === 0) {
+      setOver(true);
+    } else if (m === 0 && s === 0) {
+      setTime([h - 1, 59, 59]);
+    } else if (s == 0) {
+      setTime([h, m - 1, 59]);
+    } else {
+      setTime([h, m, s - 1]);
+    }
+  };
+
+  const onClickMenu = () => {
+    setClick(!click);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainLayout>
+      <SideBar click={click} />
+      <BodyLayout>
+        <Header onClickMenu={onClickMenu} hours={h} minutes={m} seconds={s} />
+        <Home tick={tick} />
+      </BodyLayout>
+    </MainLayout>
   );
 }
 
