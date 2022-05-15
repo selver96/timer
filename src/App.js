@@ -4,6 +4,7 @@ import SideBar from './components/SideBar';
 import Home from './pages/Home';
 import styled from 'styled-components';
 import { useState } from 'react';
+import Footer from './components/Footer';
 
 const MainLayout = styled.section`
     display: flex;
@@ -44,6 +45,7 @@ function App({ hours = 1, minutes = 0, seconds = 0 }) {
       <BodyLayout>
         <Header onClickMenu={onClickMenu} hours={h} minutes={m} seconds={s} />
         <Home tick={tick} />
+        <Footer />
       </BodyLayout>
     </MainLayout>
   );
